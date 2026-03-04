@@ -1,37 +1,12 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
 *.egg-info/
+.eggs/
 dist/
 build/
-*.egg
-
-# Data - keep ml-1m dataset, exclude zip
-data/*.zip
-
-# Checkpoints
-checkpoints/
 *.pt
-*.pth
-
-# Logs
-logs/
-*.log
-
-# Results
-experiment_results.json
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Jupyter
-.ipynb_checkpoints/
+*.pkl
+*.zip
+.env
+.venv/
