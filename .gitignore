@@ -8,10 +8,8 @@ dist/
 build/
 *.egg
 
-# Data
-data/ml-1m/
+# Data - keep ml-1m dataset, exclude zip
 data/*.zip
-*.dat
 
 # Checkpoints
 checkpoints/
