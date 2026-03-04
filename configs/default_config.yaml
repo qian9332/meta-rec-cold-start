@@ -1,0 +1,73 @@
+# Default Configuration for Meta-Learning Cold-Start Recommendation
+
+# Data settings
+data:
+  dataset: "movielens-1m"
+  data_dir: "./data/ml-1m"
+  cold_threshold: 5        # users with <= 5 interactions are "cold"
+  min_interactions: 1       # minimum interactions to include
+  support_size: 5           # K-shot support set size
+  query_size: 10            # query set size per task
+  num_workers: 4
+  seed: 42
+
+# Model settings
+model:
+  # Embedding layer
+  user_emb_dim: 64
+  item_emb_dim: 64
+  num_users: 6040
+  num_items: 3706
+  
+  # Dense layers (MLP head)
+  hidden_dims: [256, 128, 64]
+  dropout: 0.2
+  activation: "relu"
+  
+  # Meta-Embedding settings
+  meta_emb:
+    lr_emb: 0.01            # Embedding layer inner-loop lr (decoupled)
+    lr_dense: 0.001          # Dense layer inner-loop lr (decoupled)
+    low_freq_threshold: 10   # IDs with freq < this get gradient compensation
+    compensation_scale: 2.0  # gradient compensation multiplier
+    grad_clip_norm: 1.0
+
+# MAML / FOMAML settings
+maml:
+  inner_lr: 0.01
+  outer_lr: 0.001
+  inner_steps: 3            # adaptation gradient steps
+  first_order: true          # true = FOMAML, false = full MAML
+  meta_batch_size: 32        # tasks per meta-batch
+  num_epochs: 50
+  
+# Reptile settings
+reptile:
+  inner_lr: 0.01
+  outer_lr: 0.001
+  inner_steps: 5
+  epsilon: 0.1               # Reptile interpolation coefficient
+  num_epochs: 30
+  meta_batch_size: 32
+
+# ANIL settings
+anil:
+  inner_lr: 0.01
+  outer_lr: 0.001
+  inner_steps: 5
+  adapt_head_only: true      # only adapt the head (last layer)
+  num_epochs: 20
+  meta_batch_size: 32
+
+# Training settings
+training:
+  device: "auto"             # auto, cpu, or cuda
+  seed: 42
+  eval_every: 5
+  save_dir: "./checkpoints"
+  log_dir: "./logs"
+
+# Evaluation settings
+evaluation:
+  metrics: ["auc", "hr@10", "ndcg@10"]
+  cold_user_ratio: 0.2       # fraction of cold users for evaluation
